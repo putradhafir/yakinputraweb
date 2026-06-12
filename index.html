@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Smart Parking System | OOP - Usman & Putra</title>
+    <!-- Google Fonts Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 30%, #0a1928, #07121c);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding: 2rem 1.5rem;
+            color: #eef4ff;
+            line-height: 1.5;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1380px;
+            margin: 0 auto;
+            background: rgba(15, 30, 45, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #02131f, #031d2f, #052b3f);
+            padding: 2.2rem 2.8rem;
+            border-bottom: 2px solid #00d4ff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0,212,255,0.2), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #FFFFFF, #7ee0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 i {
+            background: linear-gradient(145deg, #00c6fb, #005bea);
+            padding: 14px;
+            border-radius: 32px;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+
+        .author-group {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .author-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-left: 3px solid #00d4ff;
+            font-family: monospace;
+        }
+
+        .author-card i {
+            margin-right: 6px;
+            color: #00d4ff;
+        }
+
+        .badge-smart {
+            background: rgba(0, 212, 255, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 2rem 2.8rem;
+        }
+
+        .section-card {
+            background: rgba(10, 25, 40, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 20px -12px rgba(0,0,0,0.3);
+        }
+
+        .section-card:hover {
+            border-color: rgba(0, 212, 255, 0.6);
+            box-shadow: 0 20px 30px -14px rgba(0,212,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .section-card h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #d4f1ff, #7bc5e8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            border-left: 5px solid #00d4ff;
+            padding-left: 1rem;
+            margin-bottom: 1.3rem;
+        }
+
+        .section-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 1rem 0 0.8rem;
+            color: #b3e4ff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-objek {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .objek-card {
+            background: #071e2c;
+            border-radius: 1.5rem;
+            padding: 1.3rem;
+            flex: 1 1 210px;
+            border: 1px solid #2a4e6e;
+            transition: all 0.2s;
+            backdrop-filter: blur(2px);
+        }
+
+        .objek-card h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2dc9ff;
+            border-bottom: 2px dashed #2a6b8f;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .attr-list {
+            font-size: 0.85rem;
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .attr-list li {
+            margin: 5px 0;
+            font-family: 'Fira Code', monospace;
+            color: #cae9ff;
+        }
+
+        .method-list {
+            font-family: 'Fira Code', monospace;
+            background: #0a2636;
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-size: 0.7rem;
+            margin-top: 10px;
+            color: #9dd9ff;
+        }
+
+        .code-block-wrapper {
+            position: relative;
+            margin: 1.2rem 0;
+        }
+
+        .run-btn {
+            background: linear-gradient(95deg, #0f5b7a, #0a8caf);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .run-btn:hover {
+            background: linear-gradient(95deg, #0e7ca5, #0ab5df);
+            transform: scale(1.02);
+            box-shadow: 0 0 12px #00d4ff;
+        }
+
+        pre {
+            background: #05161f;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            border: 1px solid #1f6e8c;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+            color: #d6f0ff;
+            margin: 0;
+        }
+
+        .output-console {
+            background: #02101b;
+            border-radius: 1rem;
+            padding: 0.8rem 1.2rem;
+            margin-top: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            border-left: 4px solid #00d4ff;
+            color: #bbf0ff;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .code-caption {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #78c8ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-glow {
+            display: inline-block;
+            background: linear-gradient(95deg, #0077b6, #00b4d8);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 1.4rem;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(0,212,255,0.3);
+        }
+
+        @media (max-width: 720px) {
+            .content {
+                padding: 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .run-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        .console-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #62d2ff;
+        }
+        hr {
+            border-color: #1e5875;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container" data-aos="fade-up">
+    <div class="hero">
+        <h1>
+            <i class="fas fa-parking"></i> 
+            Smart Parking Management System
+            <span class="badge-smart"><i class="fas fa-microchip"></i> OOP + Run Code</span>
+        </h1>
+        <div class="subtitle">
+            <div class="author-group">
+                <div class="author-card"><i class="fas fa-user-astronaut"></i> USMAN YAKIN TRIO SINADA | 251410006</div>
+                <div class="author-card"><i class="fas fa-user-ninja"></i> PUTRA DHAFIR NASHRULLAH | 251410009</div>
+            </div>
+            <div class="badge-smart"><i class="fas fa-chalkboard-user"></i> Kelas: SI2A · Klik ▶️ Run di setiap kode</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- LATAR BELAKANG -->
+        <div class="section-card" data-aos="fade-right">
+            <h2><i class="fas fa-car-side"></i> LATAR BELAKANG</h2>
+            <p style="margin-bottom: 0.6rem;">Kepadatan kendaraan dan kurangnya sistem parkir terintegrasi menjadi masalah utama di area perkotaan. <strong>Smart Parking Management</strong> hadir sebagai solusi cerdas menggunakan pendekatan <strong>Object Oriented Programming (OOP)</strong> untuk memodelkan kendaraan, slot parkir, transaksi, dan petugas secara real-time. Dengan OOP, sistem ini mudah dikembangkan, mendukung berbagai tipe kendaraan, dan memberikan transparansi ketersediaan slot.</p>
+        </div>
+
+        <!-- MENGAPA OOP + OBJEK -->
+        <div class="section-card" data-aos="fade-left">
+            <h2><i class="fas fa-cubes"></i> Mengapa OOP? & Objek Smart Parking</h2>
+            <p>Pendekatan OOP memetakan entitas dunia nyata (kendaraan, slot, transaksi) menjadi objek yang memiliki data dan perilaku masing-masing. Hal ini mengurangi duplikasi kode, mempermudah perawatan, dan sangat cocok untuk pengembangan fitur seperti reservasi online.</p>
+            <h3><i class="fas fa-diagram-project"></i> Objek Utama dalam Sistem</h3>
+            <div class="grid-objek">
+                <div class="objek-card"><h4>Kendaraan</h4><ul class="attr-list"><li><i class="fas fa-id-card"></i> platNomor</li><li><i class="fas fa-motorcycle"></i> jenis (Mobil/Motor)</li><li><i class="far fa-clock"></i> waktuMasuk</li></ul><div class="method-list">+ masukParkir()</div><div class="method-list">+ keluarParkir()</div></div>
+                <div class="objek-card"><h4>SlotParkir</h4><ul class="attr-list"><li><i class="fas fa-hashtag"></i> nomorSlot</li><li><i class="fas fa-flag-checkered"></i> status (tersedia/terisi)</li><li>zona/lantai</li></ul><div class="method-list">+ alokasiSlot()</div><div class="method-list">+ kosongkanSlot()</div></div>
+                <div class="objek-card"><h4>Transaksi</h4><ul class="attr-list"><li><i class="fas fa-receipt"></i> idTransaksi</li><li><i class="fas fa-coins"></i> biayaTotal</li><li>durasiParkir</li></ul><div class="method-list">+ hitungBiaya()</div><div class="method-list">+ cetakStruk()</div></div>
+                <div class="objek-card"><h4>Petugas</h4><ul class="attr-list"><li><i class="fas fa-id-badge"></i> nama</li><li><i class="fas fa-calendar-alt"></i> shift</li></ul><div class="method-list">+ laporanOkupansi()</div><div class="method-list">+ pantauSlot()</div></div>
+            </div>
+        </div>
+
+        <!-- SOURCE 1 - KENDARAAN -->
+        <div class="section-card" data-aos="flip-right">
+            <h2><i class="fab fa-dart"></i> Source 1 - Class Kendaraan (Parent)</h2>
+            <div class="code-caption"><i class="fas fa-code-branch"></i> class Kendaraan dengan atribut dasar dan method info</div>
+            <div class="code-block-wrapper">
+                <button class="run-btn" onclick="runDartSimulation('code1')"><i class="fas fa-play"></i> Run Code</button>
+                <pre id="code1">// Developer: USMAN YAKIN (251410006) & PUTRA DHAFIR (251410009)
+// Smart Parking - Class Kendaraan
+
+class Kendaraan {
+  String platNomor;
+  String jenis;
+  DateTime waktuMasuk;
+
+  Kendaraan(this.platNomor, this.jenis, this.waktuMasuk);
+  
+  void infoKendaraan() {
+    print("🔹 Kendaraan: $jenis | Plat: $platNomor | Masuk: ${waktuMasuk.hour}:${waktuMasuk.minute}");
+  }
+}
+
+void main() {
+  print("=== DEMO CLASS KENDARAAN ===");
+  DateTime now = DateTime(2026, 6, 10, 9, 30);
+  Kendaraan mobil = Kendaraan("B 2026 XC", "Mobil", now);
+  mobil.infoKendaraan();
+  
+  Kendaraan motor = Kendaraan("AG 1234 Z", "Motor", DateTime(2026, 6, 10, 10, 0));
+  motor.infoKendaraan();
+}</pre>
+            </div>
+            <div id="output-code1" class="output-console" style="display: none;"><div class="console-header"><i class="fas fa-terminal"></i> Output:</div><div id="console-code1"></div></div>
+        </div>
+
+        <!-- SOURCE 2 - SLOT PARKIR + INHERITANCE -->
+        <div class="section-card" data-aos="flip-right">
+            <h2><i class="fab fa-dart"></i> Source 2 - SlotParkir (Inheritance)</h2>
+            <div class="code-caption"><i class="fas fa-diagram-project"></i> Pewarisan dari AreaParkir</div>
+            <div class="code-block-wrapper">
+                <button class="run-btn" onclick="runDartSimulation('code2')"><i class="fas fa-play"></i> Run Code</button>
+                <pre id="code2">class AreaParkir {
+  String zona;
+  AreaParkir(this.zona);
+  void infoZona() => print("Zona parkir: $zona");
+}
+
+class SlotParkir extends AreaParkir {
+  int nomorSlot;
+  bool tersedia;
+  String? kendaraanPlat;
+
+  SlotParkir(this.nomorSlot, String zona, this.tersedia) : super(zona);
+
+  bool tempatiSlot(String plat) {
+    if (tersedia) {
+      kendaraanPlat = plat;
+      tersedia = false;
+      print("✅ Slot $nomorSlot (Zona $zona) ditempati oleh $plat");
+      return true;
+    } else {
+      print("❌ Slot $nomorSlot sudah terisi!");
+      return false;
+    }
+  }
+
+  void bebaskanSlot() {
+    if (!tersedia) {
+      print("🆓 Slot $nomorSlot dibebaskan.");
+      kendaraanPlat = null;
+      tersedia = true;
+    } else {
+      print("Slot sudah kosong.");
+    }
+  }
+}
+
+void main() {
+  print("== DEMO SLOT PARKIR + INHERITANCE ==");
+  SlotParkir slot1 = SlotParkir(1, "A1", true);
+  slot1.infoZona();
+  slot1.tempatiSlot("B 1234 AB");
+  slot1.bebaskanSlot();
+  slot1.tempatiSlot("D 9876 ZZ");
+  print("Status akhir tersedia: ${slot1.tersedia}");
+}</pre>
+            </div>
+            <div id="output-code2" class="output-console" style="display: none;"><div class="console-header"><i class="fas fa-terminal"></i> Output:</div><div id="console-code2"></div></div>
+        </div>
+
+        <!-- SOURCE 3 - TRANSAKSI & PETUGAS -->
+        <div class="section-card" data-aos="flip-right">
+            <h2><i class="fab fa-dart"></i> Source 3 - Transaksi & Petugas</h2>
+            <div class="code-caption"><i class="fas fa-calculator"></i> Billing dan monitoring petugas</div>
+            <div class="code-block-wrapper">
+                <button class="run-btn" onclick="runDartSimulation('code3')"><i class="fas fa-play"></i> Run Code</button>
+                <pre id="code3">class TransaksiParkir {
+  String id;
+  String platKendaraan;
+  int durasiJam;
+  double tarifAwal = 4000;
+  double tarifPerJam = 2000;
+
+  TransaksiParkir(this.id, this.platKendaraan, this.durasiJam);
+  
+  double hitungTotal() {
+    if (durasiJam <= 1) return tarifAwal;
+    return tarifAwal + (durasiJam - 1) * tarifPerJam;
+  }
+
+  void cetakStruk() {
+    double total = hitungTotal();
+    print("🧾 STRUK PARKIR");
+    print("ID Transaksi: $id");
+    print("Kendaraan   : $platKendaraan");
+    print("Durasi       : $durasiJam jam");
+    print("Total Bayar  : Rp${total.toStringAsFixed(0)}");
+    print("-----------------------");
+  }
+}
+
+class PetugasParkir {
+  String nama;
+  String shift;
+  PetugasParkir(this.nama, this.shift);
+  
+  void laporan(int slotTerisi, int totalSlot) {
+    print("👮 $nama (Shift $shift) => Slot terisi $slotTerisi dari $totalSlot");
+  }
+}
+
+void main() {
+  print("== DEMO TRANSAKSI & PETUGAS ==");
+  TransaksiParkir trx = TransaksiParkir("TRX99", "B 8888 XYZ", 3);
+  trx.cetakStruk();
+  
+  PetugasParkir petugas = PetugasParkir("Usman Yakin", "Pagi");
+  petugas.laporan(4, 10);
+  
+  PetugasParkir petugas2 = PetugasParkir("Putra Dhafir", "Siang");
+  petugas2.laporan(7, 10);
+}</pre>
+            </div>
+            <div id="output-code3" class="output-console" style="display: none;"><div class="console-header"><i class="fas fa-terminal"></i> Output:</div><div id="console-code3"></div></div>
+        </div>
+
+        <!-- SOURCE 4 - FULL SIMULASI -->
+        <div class="section-card" data-aos="zoom-in">
+            <h2><i class="fas fa-play-circle"></i> Source 4 - Full Simulasi Smart Parking</h2>
+            <div class="code-caption"><i class="fas fa-microchip"></i> Implementasi lengkap semua class dan simulasi masuk/keluar</div>
+            <div class="code-block-wrapper">
+                <button class="run-btn" onclick="runDartSimulation('code4')"><i class="fas fa-play"></i> Run Full Simulation</button>
+                <pre id="code4">// ========== SMART PARKING FULL SIMULATION ==========
+// Developer: USMAN YAKIN (251410006) & PUTRA DHAFIR (251410009)
+
+class Kendaraan {
+  String platNomor;
+  String jenis;
+  DateTime waktuMasuk;
+  Kendaraan(this.platNomor, this.jenis, this.waktuMasuk);
+  void info() => print("$jenis [$platNomor] masuk jam ${waktuMasuk.hour}:${waktuMasuk.minute}");
+}
+
+class SlotParkir {
+  int nomor;
+  String zona;
+  bool tersedia;
+  Kendaraan? kendaraan;
+  SlotParkir(this.nomor, this.zona, this.tersedia);
+  
+  bool tempati(Kendaraan k) {
+    if (tersedia) {
+      kendaraan = k;
+      tersedia = false;
+      print("✅ Slot $nomor (Zona $zona) ditempati ${k.platNomor}");
+      return true;
+    }
+    print("❌ Slot $nomor penuh");
+    return false;
+  }
+  
+  void kosongkan() {
+    if (!tersedia && kendaraan != null) {
+      print("🆓 Slot $nomor dikosongkan dari ${kendaraan!.platNomor}");
+      kendaraan = null;
+      tersedia = true;
+    }
+  }
+}
+
+class Transaksi {
+  String idTransaksi;
+  Kendaraan kendaraan;
+  SlotParkir slot;
+  DateTime waktuKeluar;
+  double biaya;
+  Transaksi(this.idTransaksi, this.kendaraan, this.slot, this.waktuKeluar, this.biaya);
+  
+  double hitungBiaya(int durasiJam) {
+    if (durasiJam <= 1) return 5000;
+    return 5000 + (durasiJam - 1) * 250
